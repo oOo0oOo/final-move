@@ -19,7 +19,7 @@
 
 	onMount(async () => {
 		try {
-			const response = await fetch('/data.json');
+			const response = await fetch('data.json');
 			let data = await response.json();
 			baseUrl = data.mathlib_url;
 			gameData = data.tiers;
