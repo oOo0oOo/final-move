@@ -2,7 +2,6 @@
 	import { onMount } from 'svelte';
 	import Goal from './Goal.svelte';
 	import Tactics from './Tactics.svelte';
-	import hljs from 'highlight.js';
 
 	export let onNotification: (message: string) => void;
 
@@ -16,6 +15,7 @@
 	let nextTierTactics = '';
 	let loading = true;
 	let baseUrl: string = '';
+	let goalComponent: any;
 
 	onMount(async () => {
 		try {
@@ -61,15 +61,14 @@
 	function setNewGoal() {
 		if (availableGoals.length === 0) return;
 		currentGoal = availableGoals[Math.floor(Math.random() * availableGoals.length)];
-		console.log(currentGoal[3]);
 
-		// Wait for the next tick to ensure the component has updated
+		// Use timeout to allow Goal component to be ready
 		setTimeout(() => {
-			const codeElements = document.querySelectorAll('pre code');
-			codeElements.forEach((block) => {
-				hljs.highlightElement(block);
-			});
+			if (goalComponent) {
+				goalComponent.setGoal(currentGoal);
+			}
 		}, 0);
+		console.log(currentGoal[3]);
 	}
 
 	function updateUnlockInfo() {
@@ -114,7 +113,7 @@
 	{#if loading}
 		<p class="text-center py-6">Loading game data...</p>
 	{:else}
-		<Goal goal={currentGoal} {baseUrl} />
+		<Goal bind:this={goalComponent} {baseUrl} />
 
 		<Tactics {tactics} onSelectTactic={handleTactic} />
 

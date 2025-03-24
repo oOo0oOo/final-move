@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import Game from '$lib/components/Game.svelte';
 	import Notification from '$lib/components/Notification.svelte';
 
@@ -14,14 +13,6 @@
 			showNotification = false;
 		}, 1200);
 	}
-
-	onMount(() => {
-		import('highlight.js').then((hljs) => {
-			import('highlightjs-lean').then(() => {
-				hljs.default.highlightAll();
-			});
-		});
-	});
 </script>
 
 <svelte:head>
