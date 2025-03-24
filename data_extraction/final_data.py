@@ -7,6 +7,7 @@ from pprint import pprint
 
 
 from config import (
+    BASE_URL,
     CHECKED_PATH,
     FINAL_PATH,
     LOCATIONS_PATH,
@@ -14,6 +15,7 @@ from config import (
     OMEGA_PATH,
     PROJECT_PATH,
     TACTICS,
+    TIERS,
 )
 
 # Load all checked
@@ -169,10 +171,33 @@ for cand in candidates:
                 goal = before["rendered"][8:-4]
                 if len(goal) > MAX_GOAL_LEN:
                     continue
-                final.append((file[31:], line, goal, solved[key]))
+                final.append((file[31:], line, goal, tuple(solved[key])))
 
 print(f"Found {len(final)} valid tactics for {len(candidates)} candidates")
 
+# Split into tiers
+data = []
+
+accumulated_tactics = set()
+prev_goals = set()
+for i, (tactics, cost) in enumerate(TIERS):
+    tier = {"tactics": tactics, "cost": cost, "goals": []}
+    accumulated_tactics.update(tactics)
+
+    for goal in final:
+        if goal in prev_goals:
+            continue
+
+        if set(goal[3]) & accumulated_tactics:
+            tier["goals"].append(goal)
+            prev_goals.add(goal)
+
+    print(f"Tier {i}: {len(tier['goals'])} goals")
+    data.append(tier)
+
 # Save to file
+
+d = {"tiers": data, "mathlib_url": BASE_URL}
+
 with open(FINAL_PATH, "w") as f:
-    json.dump(final, f, separators=(",", ":"))
+    json.dump(d, f, separators=(",", ":"))
