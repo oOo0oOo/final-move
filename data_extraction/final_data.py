@@ -123,20 +123,25 @@ print(
 )
 
 num = sum([len(v) for v in solved.values()])
-print(f"Found {num} valid tactics overall")
 
 # Do some stats
 flatten = [tactic for v in solved.values() for tactic in v]
 count = Counter(flatten)
-pprint(count)
+sorted_by_count = sorted(count.items(), key=lambda x: x[1], reverse=True)
 
 # Find locations that are only solved by one tactic
 only_one = {k: v for k, v in solved.items() if len(v) == 1}
-num = sum([len(v) for v in only_one.values()])
-print(f"Found {num} locations that are only solved by one tactic")
+num_unique = sum([len(v) for v in only_one.values()])
 
 count_only_one = Counter([v[0] for v in only_one.values()])
-pprint(count_only_one)
+
+# Layout counters in a table
+print("Tactic           | Solved | Uniquely solved by this tactic")
+for t, cnt in sorted_by_count:
+    space = " " * (16 - len(t))
+    print(f"{t}{space} | {cnt}\t  | {count_only_one[t]}")
+
+print("TOTAL            |", num, " |", num_unique)
 
 # # Find tactics that are often valid together
 # valid_together = defaultdict(int)
