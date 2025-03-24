@@ -17,8 +17,8 @@ LIMIT_TACTICS_MIN = 100
 
 BLACKLIST_MATHLIB_FOLDERS = ["Tactic", "Util", "Testing", "Lean"]
 
-# leanprover/lean4:v4.18.0-rc1
-BASE_URL = "https://github.com/leanprover-community/mathlib4/tree/6cecf71a82a22ea7c01598800e12f3e8eb66894b/Mathlib/"
+# leanprover/lean4:v4.18.0-rc1, sha from lake-manifest.json
+BASE_URL = "https://github.com/leanprover-community/mathlib4/tree/db4c8abb9243cf1b6c77c8e544c7c851495af16a/Mathlib/"
 
 TACTICS = [
     "decide",

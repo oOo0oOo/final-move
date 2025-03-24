@@ -14,7 +14,8 @@
 <style>
 	.notification {
 		opacity: 1;
-		transition: opacity 0.5s;
+		transition: opacity 2.5s ease-out;
+		animation: notificationAppear 0.3s ease-in;
 	}
 
 	.fade-out {
@@ -23,5 +24,16 @@
 
 	.hidden {
 		display: none;
+	}
+
+	@keyframes notificationAppear {
+		0% {
+			opacity: 0;
+			transform: scale(0.8);
+		}
+		100% {
+			opacity: 1;
+			transform: scale(1);
+		}
 	}
 </style>
